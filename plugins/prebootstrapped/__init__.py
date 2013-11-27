@@ -27,16 +27,12 @@ def tasks(tasklist, manifest):
 		if 'snapshot' in settings and settings['snapshot'] is not None:
 			tasklist.add(CreateFromSnapshot)
 			tasklist.remove(*skip_tasks)
-			if 'boot' in manifest.volume['partitions']:
-				tasklist.add(SetBootMountDir)
 		else:
 			tasklist.add(Snapshot)
 	else:
 		if 'image' in settings and settings['image'] is not None:
 			tasklist.add(CreateFromImage)
 			tasklist.remove(*skip_tasks)
-			if 'boot' in manifest.volume['partitions']:
-				tasklist.add(SetBootMountDir)
 		else:
 			tasklist.add(CopyImage)
 

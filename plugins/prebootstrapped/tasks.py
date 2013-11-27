@@ -71,16 +71,6 @@ class CreateFromImage(Task):
 		set_fs_states(info.volume)
 
 
-class SetBootMountDir(Task):
-	description = 'Setting mountpoint for the boot partition'
-	phase = phases.volume_mounting
-	predecessors = [filesystem.MountRoot]
-	successors = [filesystem.MountBoot]
-
-	def run(self, info):
-		info.boot_dir = os.path.join(info.root, 'boot')
-
-
 def set_fs_states(volume):
 		volume.fsm.current = 'detached'
 
