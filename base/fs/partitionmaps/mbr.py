@@ -11,12 +11,12 @@ class MBRPartitionMap(AbstractPartitionMap):
 		if 'boot' in data:
 			self.boot = MBRPartition(data['boot']['size'], data['boot']['filesystem'], None)
 			self.partitions.append(self.boot)
+		if 'swap' in data:
+			self.swap = MBRSwapPartition(data['swap']['size'], getattr(self, 'root', None))
+			self.partitions.append(self.swap)
 		self.root = MBRPartition(data['root']['size'], data['root']['filesystem'],
 		                         getattr(self, 'boot', None))
 		self.partitions.append(self.root)
-		if 'swap' in data:
-			self.swap = MBRSwapPartition(data['swap']['size'], self.root)
-			self.partitions.append(self.swap)
 
 		super(MBRPartitionMap, self).__init__()
 
