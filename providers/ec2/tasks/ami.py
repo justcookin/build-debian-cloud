@@ -180,10 +180,16 @@ class RegisterAMI(Task):
 		block_device_map = BlockDeviceMapping()
 		block_device_map['/dev/sda'] = block_device
 
+		if info.manifest.virtualization == 'pvm':
+			virtualization = 'paravirtual'
+		else:
+			virtualization = 'hvm'
+
 		info.image = info.connection.register_image(name=info.ami_name, description=info.ami_description,
 		                                            architecture=arch, kernel_id=kernel_id,
 		                                            root_device_name=root_device_name,
-		                                            block_device_map=block_device_map)
+		                                            block_device_map=block_device_map,
+		                                            virtualization=virtualization)
 
 	def run_s3(self, info):
 		arch = {'i386': 'i386', 'amd64': 'x86_64'}.get(info.manifest.system['architecture'])
@@ -196,7 +202,14 @@ class RegisterAMI(Task):
 		image_manifest = ('{bucket}/{ami_name}.manifest.xml'
 		                  .format(bucket=info.manifest.image['bucket'],
 		                          ami_name=info.ami_name))
+
+		if info.manifest.virtualization == 'pvm':
+			virtualization = 'paravirtual'
+		else:
+			virtualization = 'hvm'
+
 		info.image = info.connection.register_image(name=info.ami_name, description=info.ami_description,
 		                                            architecture=arch, kernel_id=kernel_id,
 		                                            root_device_name='dev/sda1',
-		                                            image_location=image_manifest)
+		                                            image_location=image_manifest,
+		                                            virtualization=virtualization)
