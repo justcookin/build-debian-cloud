@@ -2,7 +2,6 @@ from tasks import Snapshot
 from tasks import CopyImage
 from tasks import CreateFromSnapshot
 from tasks import CreateFromImage
-from tasks import SetBootMountDir
 from providers.ec2.tasks import ebs
 from common.tasks import loopback
 from common.tasks import volume
